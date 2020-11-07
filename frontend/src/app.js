@@ -56,11 +56,11 @@ const App = () => {
   }
 
   // A composite progress bar component
+  // PASS SLIDER VALUE IN TO THE SLIDERHANDLE. THAT SHOULD FIX THE NONUPDATING ISSUE
   const ProgressBar = ({ isEnabled, direction, value, ...props }) => (
     <Slider
       direction={direction}
       onChange={(blah) => setSliderValue(blah * 100)}
-      onChangeStart={(blah) => setSliderValue(blah * 100)}
       style={{
         width: direction === Direction.HORIZONTAL ? HORIZONTAL_BAR_WIDTH : 8,
         height: 8,
