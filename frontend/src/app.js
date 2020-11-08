@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import ReactPlayer from 'react-player';
+import SeekBar from './components/progress-bar';
 // ES2015+ import
 import { Slider, Direction } from 'react-player-controls'
 
@@ -7,7 +8,6 @@ const WHITE_SMOKE = '#eee'
 const GRAY = '#878c88'
 const GREEN = '#72d687'
 const HORIZONTAL_BAR_WIDTH = 400
-
 
 const App = () => {
 
@@ -30,7 +30,7 @@ const App = () => {
   )
 
   // A handle to indicate the current value
-  const SliderHandle = ({ direction, style }) => {
+  const SliderHandle = ({ direction, value, style }) => {
     console.log('inside sliderhandle');
     return (
       <div
@@ -47,7 +47,7 @@ const App = () => {
           }
         }, direction === Direction.HORIZONTAL ? {
           top: 0,
-          left: `${sliderValue}%`,
+          left: `${sliderValue * 100}%`,
           marginTop: -4,
           marginLeft: -8,
         } : {}, style)}
@@ -55,29 +55,35 @@ const App = () => {
     )
   }
 
+  const foo = (blarg) => {
+    console.log('wutwut ', blarg);
+    setSliderValue(blarg);
+  };
+
   // A composite progress bar component
-  // PASS SLIDER VALUE IN TO THE SLIDERHANDLE. THAT SHOULD FIX THE NONUPDATING ISSUE
-  const ProgressBar = ({ isEnabled, direction, value, ...props }) => (
-    <Slider
-      direction={direction}
-      onChange={(blah) => setSliderValue(blah * 100)}
-      style={{
-        width: direction === Direction.HORIZONTAL ? HORIZONTAL_BAR_WIDTH : 8,
-        height: 8,
-        borderRadius: 4,
-        background: WHITE_SMOKE,
-        transition: direction === Direction.HORIZONTAL ? 'width 0.1s' : 'height 0.1s',
-        cursor: isEnabled === true ? 'pointer' : 'default',
-      }}
-      {...props}
-    >
-      <SliderBar direction={direction} value={value} style={{ background: isEnabled ? GREEN : GRAY }} />
-      <SliderHandle
-        direction={direction}
-        style={{ background: isEnabled ? GREEN : GRAY }}
-      />
-    </Slider>
-  )
+  const ProgressBar = ({sliderValue, sliderValueSetter}) => {
+    console.log('what is the onchange function? ', sliderValueSetter);
+    return (
+      <Slider
+        isEnabled={true}
+        direction={Direction.HORIZONTAL}
+        onChange={setSliderValue}
+        style={{
+          width: HORIZONTAL_BAR_WIDTH,
+          height: 8,
+          transition: 'width 0.1s',
+          cursor: 'pointer',
+        }}
+      >
+        <SliderBar direction={Direction.HORIZONTAL} value={sliderValue} style={{ background: GREEN }} />
+        <SliderHandle
+          direction={Direction.HORIZONTAL}
+          value={sliderValue}
+          style={{ background:GREEN }}
+        />
+      </Slider>
+    )
+  }
 
   const handleProgress = (progressObj) =>{
     console.log(progressObj);
@@ -89,22 +95,18 @@ const App = () => {
         controls={true}
         onProgress={handleProgress}
         url='./assets/videos/test_clip.mp4'
-    />
+      />
+      <div style={{padding:'30px'}}>
+        <ProgressBar
+          sliderValue={sliderValue}
+          sliderValueSetter={foo}
+        />
+      </div>
       <p>you clicked {count} times biiiiiiitch</p>
       <p>the slidervalue is {sliderValue}</p>
       <button onClick={() => setCount(count+1)}>
         hello there
       </button>
-
-      {console.log('the bar value is: ', sliderValue)}
-      <div style={{padding:'30px'}}>
-        <ProgressBar
-          isEnabled={true}
-          direction={Direction.HORIZONTAL}
-          value={sliderValue}
-        />
-      </div>
-
     </div>
   )
 }
