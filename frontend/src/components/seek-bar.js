@@ -48,7 +48,6 @@ const SliderHandle = ({ direction, value, style }) => {
 
 // A composite progress bar component
 export const SeekBar = (props) => {
-  console.log('what is the onchange function? ', props.sliderValueSetter);
   return (
     <Slider
       isEnabled={true}
