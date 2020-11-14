@@ -1,13 +1,6 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import ReactPlayer from 'react-player';
 import SeekBar from './components/seek-bar';
-// ES2015+ import
-import { Slider, Direction } from 'react-player-controls'
-
-const WHITE_SMOKE = '#eee'
-const GRAY = '#878c88'
-const GREEN = '#72d687'
-const HORIZONTAL_BAR_WIDTH = 400
 
 const App = () => {
 
@@ -15,41 +8,66 @@ const App = () => {
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [videoLength, setVideoLength] = useState(0);
   const [player, setPlayer] = useState(null);
+  const [cutTimes, setCutTimes] = useState([[]]);
+  const [startCut, setCutState] = useState(true);
 
   const handleProgress = (progressObj) => {
-    console.log(progressObj);
-    let playedSeconds = progressObj.playedSeconds;
     setPlayedSeconds(progressObj.playedSeconds);
     setSliderValue(playedSeconds/videoLength);
   }
 
   const handleReady = (vidya) => {
-    console.log('the video is ready :', vidya);
     setVideoLength(vidya.getDuration());
     setPlayer(vidya);
   }
 
   const setVideoTime = (time) => {
-    console.log('moving to video time');
     setSliderValue(time);
     player.seekTo(time);
   }
 
+  const clipsHandler = () => {
+    let cutData = cutTimes;
+    let playerCurrentTime = player.getCurrentTime();
+    console.log('cutTimes data: ', cutTimes);
+    console.log('video current time is: ', playerCurrentTime);
+    switch (startCut){
+      case true:
+        cutData[cutData.length - 1][0] = player.getCurrentTime()
+        setCutState(false);
+        break;
+      default:
+        cutData[cutData.length - 1][1] = player.getCurrentTime()
+        cutData[cutData.length] = [];
+        setCutState(true);
+    }
+    setCutTimes(cutData);
+
+    console.log(cutData);
+  }
+
   return(
     <div>
-      <ReactPlayer
-        controls={true}
-        onReady={handleReady}
-        onProgress={handleProgress}
-        url='./assets/videos/test_clip.mp4'
-      />
-      <div style={{padding:'30px'}}>
-        <SeekBar
-          sliderValue={sliderValue}
-          sliderValueSetter={setVideoTime}
+      <div className="videoplayer">
+        <ReactPlayer
+          controls={true}
+          onReady={handleReady}
+          onProgress={handleProgress}
+          url='./assets/videos/test_clip.mp4'
         />
+        <div style={{padding:'30px'}}>
+          <SeekBar
+            sliderValue={sliderValue}
+            sliderValueSetter={setVideoTime}
+          />
+        </div>
+        <p>the slidervalue is {sliderValue}</p>
       </div>
-      <p>the slidervalue is {sliderValue}</p>
+      <div>
+        <button onClick={clipsHandler}>
+          Cut the video
+        </button>
+      </div>
     </div>
   )
 }

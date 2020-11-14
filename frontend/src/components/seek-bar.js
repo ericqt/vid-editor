@@ -1,50 +1,40 @@
 import { Slider, Direction } from 'react-player-controls'
+import styled from 'styled-components';
 
-const WHITE_SMOKE = '#eee'
 const GRAY = '#878c88'
 const GREEN = '#72d687'
 const HORIZONTAL_BAR_WIDTH = 400
 
-const SliderBar = ({ direction, style }) => (
-  <div
-    style={Object.assign({}, {
-      position: 'absolute',
-      background: GRAY,
-      borderRadius: 4,
-    }, direction === Direction.HORIZONTAL ? {
-      top: 0,
-      bottom: 0,
-      left: 0,
-      width: `${100}%`,
-    } : {}, style)}
-  />
-)
+const SliderBar = styled.div.attrs( props => ({
+}))`
+      position: absolute;
+      background: ${GRAY};
+      border-radius: 4px;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+`
 
-// A handle to indicate the current value
-const SliderHandle = ({ direction, value, style }) => {
-  console.log('inside sliderhandle');
-  return (
-    <div
-      style={Object.assign({}, {
-        position: 'absolute',
-        width: 16,
-        height: 16,
-        background: GREEN,
-        borderRadius: '100%',
-        transform: 'scale(1)',
-        transition: 'transform 0.2s',
-        '&:hover': {
-          transform: 'scale(1.3)',
-        }
-      }, direction === Direction.HORIZONTAL ? {
-        top: 0,
-        left: `${value * 100}%`,
-        marginTop: -4,
-        marginLeft: -8,
-      } : {}, style)}
-    />
-  )
-}
+const SliderHandle = styled.div.attrs( props => {
+  return ({
+  });
+})`
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: ${GREEN};
+    border-radius: 100%;
+    transform: scale(1);
+    transition: transform 0.2s;
+    &:hover: {
+      transform: scale(1.3);
+    }
+    top: 0px;
+    left: ${props => (props.value * 100)}%;
+    margin-top: -4px;
+    margin-left: -8px;
+`
 
 // A composite progress bar component
 export const SeekBar = (props) => {
