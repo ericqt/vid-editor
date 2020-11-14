@@ -17,6 +17,7 @@ const SliderBar = styled.div.attrs( props => ({
 `
 
 const SliderHandle = styled.div.attrs( props => {
+  console.log('incoming value: ', props.value);
   return ({
   });
 })`
@@ -38,25 +39,36 @@ const SliderHandle = styled.div.attrs( props => {
 
 // A composite progress bar component
 export const SeekBar = (props) => {
+
+  const setVideoTime = (time) => {
+    console.log('setting the video time');
+    props.setSliderValue(time);
+    props.player.seekTo(time);
+  }
+
   return (
-    <Slider
-      isEnabled={true}
-      direction={Direction.HORIZONTAL}
-      onChange={props.sliderValueSetter}
-      style={{
-        width: HORIZONTAL_BAR_WIDTH,
-        height: 8,
-        transition: 'width 0.1s',
-        cursor: 'pointer',
-      }}
-    >
-      <SliderBar direction={Direction.HORIZONTAL} value={props.sliderValue} style={{ background: GREEN }} />
-      <SliderHandle
+    <div style={{padding:'30px'}}>
+      <Slider
+        role='sliderwhole'
+        isEnabled={true}
         direction={Direction.HORIZONTAL}
-        value={props.sliderValue}
-        style={{ background:GREEN }}
-      />
-    </Slider>
+        onChange={setVideoTime}
+        style={{
+          width: HORIZONTAL_BAR_WIDTH,
+          height: 8,
+          transition: 'width 0.1s',
+          cursor: 'pointer',
+        }}
+      >
+        <SliderBar direction={Direction.HORIZONTAL} value={props.sliderValue} style={{ background: GREEN }} />
+        <SliderHandle
+          direction={Direction.HORIZONTAL}
+          value={props.sliderValue}
+          style={{ background:GREEN }}
+          role='sliderhandle'
+        />
+      </Slider>
+    </div>
   )
 }
 
