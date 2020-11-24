@@ -10,20 +10,24 @@ const VideoContainer = styled.div`
 
 const VideoPlayer = (props) => {
   const [sliderValue, setSliderValue] = useState(0);
+  const [videoDuration, setVideoDuration] = useState(0);
 
   const handleReady = (vidya) => {
     console.log('the video is ready');
     props.setPlayer(vidya);
+    setSliderValue(vidya.getCurrentTime());
+    setVideoDuration(vidya.getDuration());
   }
 
   const handleProgress = (progressObj) => {
     let timePlayed = props.player.getCurrentTime();
-    let videoLength = props.player.getDuration();
-    setSliderValue(timePlayed/videoLength);
+    setSliderValue(timePlayed);
   }
 
   const handleSlider = (ev, newValue) => {
-    console.log('in the handleSlider', newValue);
+    console.log('in the handleSlider', ev.target.value);
+    setSliderValue(ev.target.value);
+    props.player.seekTo(ev.target.value);
   }
 
 return (
@@ -36,10 +40,11 @@ return (
         />
         <SeekBar
           sliderValue={sliderValue}
-          setSliderValue={handleSlider}
+          handleSlider={handleSlider}
+          min={0}
+          videoDuration={videoDuration}
           player={props.player}
         />
-        <p>the slidervalue is {sliderValue}</p>
       </VideoContainer>
 )
 
