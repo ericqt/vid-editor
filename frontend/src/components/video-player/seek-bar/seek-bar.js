@@ -75,7 +75,9 @@ export const SeekBar = (props) => {
   else
     return (
       <SliderContainer>
-        <SliderBar />
+        <SliderBar
+          role='sliderbar'
+        />
         <SliderHandle
           onChange={props.handleSlider}
           player={props.player}
@@ -83,6 +85,7 @@ export const SeekBar = (props) => {
           min={0}
           max={props.videoDuration}
           value={props.sliderValue}
+          role='sliderhandle'
         />
       </SliderContainer>
     )

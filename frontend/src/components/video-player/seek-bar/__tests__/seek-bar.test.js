@@ -1,20 +1,33 @@
 import '@testing-library/jest-dom'
 
-import renderer from 'react-test-renderer';
 import {render, rerender, fireEvent, screen} from '@testing-library/react';
 import SeekBar from '../seek-bar';
+import * as VideoPlayer from '../../video-player';
 
-test('SliderHandle moves according to sliderValue', () => {
-  let sliderValue = 0.43;
-  const result = render(
+jest.mock('../../video-player');
+
+describe('handleSlider gets changed', () => {
+
+  let sliderValue = 43;
+  const handleSlider = jest.fn()
+  const player = jest.fn()
+  const { getByRole } = render(
     <SeekBar
       sliderValue={sliderValue}
-      setSliderValue={() => jest.fn()}
-      player={() => jest.fn()}
+      handleSlider={handleSlider}
+      player={player}
+      min={0}
+      videoDuration={100}
     />
   );
-  const sliderHandle = result.getByRole('sliderhandle');
-  const slider = result.getByRole('sliderwhole');
-  console.log(slider);
-  expect(sliderHandle).toHaveStyle('left: 43%');
-})
+  const sliderHandle = getByRole('sliderhandle');
+
+  beforeAll( () => {
+  });
+
+  test('calls sliderHandle', () => {
+    fireEvent.change(sliderHandle, {target: {value: 23}});
+    expect(handleSlider).toHaveBeenCalledTimes(1);
+  });
+
+});

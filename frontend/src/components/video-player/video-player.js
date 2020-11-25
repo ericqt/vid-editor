@@ -37,6 +37,7 @@ return (
           onReady={handleReady}
           onProgress={handleProgress}
           url='./assets/videos/test_clip.mp4'
+          role='reactplayer'
         />
         <SeekBar
           sliderValue={sliderValue}
