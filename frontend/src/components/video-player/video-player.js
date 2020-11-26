@@ -5,7 +5,9 @@ import styled from 'styled-components';
 
 const VideoContainer = styled.div`
   position: relative;
-  margin: 10px;
+  margin: 0.5%;
+  display: inline-block;
+  width: 49%;
 `;
 
 const VideoPlayer = (props) => {
@@ -30,24 +32,25 @@ const VideoPlayer = (props) => {
     props.player.seekTo(ev.target.value);
   }
 
-return (
-      <VideoContainer>
-        <ReactPlayer
-          controls={true}
-          onReady={handleReady}
-          onProgress={handleProgress}
-          url='./assets/videos/test_clip.mp4'
-          role='reactplayer'
-        />
-        <SeekBar
-          sliderValue={sliderValue}
-          handleSlider={handleSlider}
-          min={0}
-          videoDuration={videoDuration}
-          player={props.player}
-        />
-      </VideoContainer>
-)
+  return (
+        <VideoContainer>
+          <ReactPlayer
+            controls={true}
+            onReady={handleReady}
+            onProgress={handleProgress}
+            url='./assets/videos/test_clip.mp4'
+            role='reactplayer'
+            width='100%'
+          />
+          <SeekBar
+            sliderValue={sliderValue}
+            handleSlider={handleSlider}
+            min={0}
+            videoDuration={videoDuration}
+            player={props.player}
+          />
+        </VideoContainer>
+  )
 
 }
 

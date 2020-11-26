@@ -6,8 +6,9 @@ const GREEN = '#72d687'
 const HORIZONTAL_BAR_WIDTH = 400
 
 const SliderContainer = styled.div`
-  position: absolute;
-  width: ${HORIZONTAL_BAR_WIDTH}px;
+  position: relative;
+  text-align: center;
+  width: 98%;
   height: 16px;
   margin: 10px;
   left: 0%;
@@ -21,7 +22,7 @@ const SliderBar = styled.div`
       bottom: 0;
       left: 0;
       right: 0;
-      width: 100%;
+      width: 98%;
       height: 8px;
 `
 
@@ -29,14 +30,12 @@ const SliderHandle = styled.input`
     -webkit-appearance: none;
     background: transparent;
     position: relative;
-    width: 100%;
+    width: 98%;
     height: 8px;
-    appearance: none;
     outline: none;
     border-radius: 4px;
+    margin-left: -12px;
     top: 0px;
-    left: 0%;
-    margin-left: 0px;
     ::-webkit-slider-thumb {
       margin-top: -4px;
       width: 16px;
@@ -52,12 +51,6 @@ const SliderHandle = styled.input`
     }
     ::-webkit-slider-runnable-track {
     }
-`
-
-let TestInput = styled.input`
-  position:relative;
-  width: 100%;
-  appearance: none;
 `
 
 
