@@ -43,7 +43,6 @@ const outputCutTimes = (cutTimesData) => {
 
 const Editor = (props) => {
 
-  console.log(props.player);
   const clipsHandler = () => {
     let cutData = props.cutTimes;
     console.log(props.player)
@@ -61,13 +60,13 @@ const Editor = (props) => {
         props.setCutState(true);
     }
     props.setCutTimes(cutData);
-
-    console.log(cutData);
   }
 
   return (
     <EditorContainer>
-      <div>
+      <div
+        role="cuttimes"
+      >
         Here are the cut times:
         {outputCutTimes(props.cutTimes)}
       </div>
