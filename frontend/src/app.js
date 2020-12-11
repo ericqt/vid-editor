@@ -9,7 +9,7 @@ const App = () => {
     [],
   ]);
   const [startCut, setCutState] = useState(true);
-  const someUrl = './assets/videos/test_clip.mp4';
+  const someUrl = './videos/test.mp4';
 
   return(
     <div>

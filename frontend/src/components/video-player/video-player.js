@@ -38,7 +38,7 @@ const VideoPlayer = (props) => {
             controls={true}
             onReady={handleReady}
             onProgress={handleProgress}
-            url='./assets/videos/test_clip.mp4'
+            url={props.url}
             role='reactplayer'
             width='100%'
           />

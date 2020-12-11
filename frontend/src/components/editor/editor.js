@@ -17,7 +17,7 @@ const CutButton = styled.button`
 const CutTimeSpan = styled.td`
 `
 
-const outputCutTimes = (cutTimesData) => {
+export const outputCutTimes = (cutTimesData) => {
   console.log(cutTimesData);
   let data = [];
   let table = (

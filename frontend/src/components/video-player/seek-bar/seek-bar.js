@@ -11,7 +11,7 @@ const SliderContainer = styled.div`
   width: 98%;
   height: 16px;
   margin: 10px;
-  left: 0%;
+  left: 8px;
 `
 
 const SliderBar = styled.div`
@@ -30,11 +30,11 @@ const SliderHandle = styled.input`
     -webkit-appearance: none;
     background: transparent;
     position: relative;
-    width: 98%;
+    width: 99%;
     height: 8px;
     outline: none;
     border-radius: 4px;
-    margin-left: -12px;
+    margin-left: -16px;
     top: 0px;
     ::-webkit-slider-thumb {
       margin-top: -4px;
