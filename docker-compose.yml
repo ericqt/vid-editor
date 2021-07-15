@@ -1,0 +1,20 @@
+---
+services:
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      PORT: 80
+    ports:
+      - "8000:80"
+    volumes:
+      - ./frontend/src:/var/app/src
+  backend:
+    build:
+      context: ./backend
+    environment:
+      - PORT=80
+    ports:
+      - "3000:80"
+    volumes:
+      - ./backend/src:/var/app/src

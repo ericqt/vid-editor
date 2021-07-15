@@ -14,12 +14,17 @@ const CutButton = styled.button`
   bottom: 0px;
 `
 
+const PostButton = styled.button`
+  position: absolute;
+  bottom: 30px;
+`
+
 const CutTimeSpan = styled.td`
 `
 
 export const outputCutTimes = (cutTimesData) => {
   console.log(cutTimesData);
-  let data = [];
+  // let data = [];
   let table = (
     <table>
       <thead>
@@ -46,7 +51,7 @@ const Editor = (props) => {
   const clipsHandler = () => {
     let cutData = props.cutTimes;
     console.log(props.player)
-    let playerCurrentTime = props.player.getCurrentTime();
+    // let playerCurrentTime = props.player.getCurrentTime();
     console.log('cutTimes data: ', props.cutTimes);
     console.log('the cut state is: ', props.startCut);
     switch (props.startCut){
@@ -62,6 +67,25 @@ const Editor = (props) => {
     props.setCutTimes(cutData);
   }
 
+  const postHandler = () => {
+    console.log('inside the posthandler')
+    let cutTimes = {
+      'cuttimes': [[1,2], [5,7]]
+    }
+
+    fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cutTimes),
+    })
+    .then(data => data )
+    .then(data => {console.log(data)})
+    .catch((error) => {
+      console.error('Error: ', error);
+    });
+  }
+
   return (
     <EditorContainer>
       <div
@@ -71,6 +95,7 @@ const Editor = (props) => {
         {outputCutTimes(props.cutTimes)}
       </div>
       <CutButton onClick={clipsHandler}> oh wow </CutButton>
+      <PostButton onClick={postHandler}> test post </PostButton>
     </EditorContainer>
   )
 
