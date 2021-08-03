@@ -79,7 +79,7 @@ const Editor = (props) => {
       },
       body: JSON.stringify(cutTimes),
     })
-    .then(data => data )
+    .then(data => data)
     .then(data => {console.log(data)})
     .catch((error) => {
       console.error('Error: ', error);
@@ -94,7 +94,7 @@ const Editor = (props) => {
         Here are the cut times:
         {outputCutTimes(props.cutTimes)}
       </div>
-      <CutButton onClick={clipsHandler}> oh wow </CutButton>
+      <CutButton onClick={clipsHandler}> Cut Time </CutButton>
       <PostButton onClick={postHandler}> test post </PostButton>
     </EditorContainer>
   )
