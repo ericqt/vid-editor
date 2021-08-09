@@ -1,3 +1,4 @@
+import React from "react";
 import '@testing-library/jest-dom';
 import App from '../../../app';
 import {render, fireEvent, screen} from '@testing-library/react';
@@ -25,10 +26,8 @@ describe('Start Cut', () => {
     let setCutTimes = jest.fn().mockImplementation(
       (cutData) => { cutTimes = cutData });
     let cutState = true;
-    let getCutState = () => cutState;
-    let setCutState = jest.fn().mockImplementation(
-      (incomingState) => { cutState = incomingState });
-    let rendered = render(<Editor
+    let setCutState = jest.fn().mockImplementation( newState => {cutState = newState});
+    render(<Editor
         player={player}
         cutTimes={cutTimes}
         setCutTimes={setCutTimes}

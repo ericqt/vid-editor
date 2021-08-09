@@ -54,14 +54,21 @@ const Editor = (props) => {
     // let playerCurrentTime = props.player.getCurrentTime();
     console.log('cutTimes data: ', props.cutTimes);
     console.log('the cut state is: ', props.startCut);
+    let currentStart = cutData[cutData.length - 1][0]
+    let currentTime = props.player.getCurrentTime()
     switch (props.startCut){
       case true:
         cutData[cutData.length - 1][0] = props.player.getCurrentTime()
         props.setCutState(false);
         break;
       default:
-        cutData[cutData.length - 1][1] = props.player.getCurrentTime()
-        cutData[cutData.length] = [];
+        if (currentTime < currentStart){
+          cutData[cutData.length - 1][1] = currentStart
+          cutData[cutData.length - 1][0] = currentTime
+        } else {
+          cutData[cutData.length - 1][1] = props.player.getCurrentTime()
+          cutData[cutData.length] = [];
+          }
         props.setCutState(true);
     }
     props.setCutTimes(cutData);
