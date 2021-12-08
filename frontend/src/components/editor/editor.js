@@ -23,8 +23,6 @@ const CutTimeSpan = styled.td`
 `
 
 export const outputCutTimes = (cutTimesData) => {
-  console.log(cutTimesData);
-  // let data = [];
   let table = (
     <table>
       <thead>
@@ -33,8 +31,8 @@ export const outputCutTimes = (cutTimesData) => {
         </tr>
       </thead>
       <tbody>
-      {cutTimesData.map((times) => (
-        <tr key={times[0]+times[1]}>
+      {cutTimesData.map((times, index) => (
+        <tr key={index}>
           <CutTimeSpan key={times[0]}>{times[0]}</CutTimeSpan>
           <CutTimeSpan key={times[1]}>{times[1]}</CutTimeSpan>
         </tr>
@@ -50,34 +48,30 @@ const Editor = (props) => {
 
   const clipsHandler = () => {
     let cutData = props.cutTimes;
-    console.log(props.player)
     // let playerCurrentTime = props.player.getCurrentTime();
-    console.log('cutTimes data: ', props.cutTimes);
-    console.log('the cut state is: ', props.startCut);
-    let currentStart = cutData[cutData.length - 1][0]
     let currentTime = props.player.getCurrentTime()
     switch (props.startCut){
       case true:
-        cutData[cutData.length - 1][0] = props.player.getCurrentTime()
+        cutData[cutData.length] = []
+        cutData[cutData.length-1][0] = props.player.getCurrentTime()
         props.setCutState(false);
         break;
       default:
+        let currentStart = cutData[cutData.length - 1][0]
         if (currentTime < currentStart){
           cutData[cutData.length - 1][1] = currentStart
           cutData[cutData.length - 1][0] = currentTime
         } else {
           cutData[cutData.length - 1][1] = props.player.getCurrentTime()
-          cutData[cutData.length] = [];
-          }
+        }
         props.setCutState(true);
     }
     props.setCutTimes(cutData);
   }
 
   const postHandler = () => {
-    console.log('inside the posthandler')
     let cutTimes = {
-      'cuttimes': [[1,2], [5,7]]
+      'cuttimes': props.cutTimes
     }
 
     fetch('http://localhost:3000/', {
@@ -86,7 +80,7 @@ const Editor = (props) => {
       },
       body: JSON.stringify(cutTimes),
     })
-    .then(data => data)
+    .then(response => response.json())
     .then(data => {console.log(data)})
     .catch((error) => {
       console.error('Error: ', error);
@@ -102,7 +96,7 @@ const Editor = (props) => {
         {outputCutTimes(props.cutTimes)}
       </div>
       <CutButton onClick={clipsHandler}> Cut Time </CutButton>
-      <PostButton onClick={postHandler}> test post </PostButton>
+      <PostButton onClick={postHandler}> test post BOOYAKASHA </PostButton>
     </EditorContainer>
   )
 

@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+var ffmpeg = require('fluent-ffmpeg');
+var pathToFfmpeg = require('ffmpeg-static')
+
 /* home page resource. */
 router.route('/')
   .get(function(req, res, next) {
@@ -8,8 +11,9 @@ router.route('/')
     res.send('Hello, world with slash');
   })
   .post(function(req, res, next) {
-    console.log(req.body)
-    res.send(req.body)
+    command = ffmpeg('./videos/new_test.mp4');
+    command.inputOptions(['-hwaccel_output_format']);
+    res.json(req.body)
   })
 
 /* GET home page. */

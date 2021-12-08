@@ -5,7 +5,7 @@ import Editor from './components/editor/editor';
 const App = () => {
 
   const [player, setPlayer] = useState(null);
-  const [cutTimes, setCutTimes] = useState([[]]);
+  const [cutTimes, setCutTimes] = useState([]);
   const [startCut, setCutState] = useState(true);
   const someUrl = './videos/test.mp4';
 

@@ -9,6 +9,7 @@ services:
       - "8000:80"
     volumes:
       - ./frontend/src:/var/app/src
+      - ./videos/:/var/app/videos
   backend:
     build:
       context: ./backend
@@ -18,3 +19,4 @@ services:
       - "3000:80"
     volumes:
       - ./backend/src:/var/app/src
+      - ./videos/:/var/app/videos
