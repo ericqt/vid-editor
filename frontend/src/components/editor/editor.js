@@ -14,12 +14,15 @@ const CutButton = styled.button`
   bottom: 0px;
 `
 
+const PostButton = styled.button`
+  position: absolute;
+  bottom: 30px;
+`
+
 const CutTimeSpan = styled.td`
 `
 
 export const outputCutTimes = (cutTimesData) => {
-  console.log(cutTimesData);
-  let data = [];
   let table = (
     <table>
       <thead>
@@ -28,8 +31,8 @@ export const outputCutTimes = (cutTimesData) => {
         </tr>
       </thead>
       <tbody>
-      {cutTimesData.map((times) => (
-        <tr key={times[0]+times[1]}>
+      {cutTimesData.map((times, index) => (
+        <tr key={index}>
           <CutTimeSpan key={times[0]}>{times[0]}</CutTimeSpan>
           <CutTimeSpan key={times[1]}>{times[1]}</CutTimeSpan>
         </tr>
@@ -45,21 +48,43 @@ const Editor = (props) => {
 
   const clipsHandler = () => {
     let cutData = props.cutTimes;
-    console.log(props.player)
-    let playerCurrentTime = props.player.getCurrentTime();
-    console.log('cutTimes data: ', props.cutTimes);
-    console.log('the cut state is: ', props.startCut);
+    // let playerCurrentTime = props.player.getCurrentTime();
+    let currentTime = props.player.getCurrentTime()
     switch (props.startCut){
       case true:
-        cutData[cutData.length - 1][0] = props.player.getCurrentTime()
+        cutData[cutData.length] = []
+        cutData[cutData.length-1][0] = props.player.getCurrentTime()
         props.setCutState(false);
         break;
       default:
-        cutData[cutData.length - 1][1] = props.player.getCurrentTime()
-        cutData[cutData.length] = [];
+        let currentStart = cutData[cutData.length - 1][0]
+        if (currentTime < currentStart){
+          cutData[cutData.length - 1][1] = currentStart
+          cutData[cutData.length - 1][0] = currentTime
+        } else {
+          cutData[cutData.length - 1][1] = props.player.getCurrentTime()
+        }
         props.setCutState(true);
     }
     props.setCutTimes(cutData);
+  }
+
+  const postHandler = () => {
+    let cutTimes = {
+      'cuttimes': props.cutTimes
+    }
+
+    fetch('http://localhost:3000/trim', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cutTimes),
+    })
+    .then(response => response.json())
+    .then(data => {console.log(data)})
+    .catch((error) => {
+      console.error('Error: ', error);
+    });
   }
 
   return (
@@ -70,7 +95,8 @@ const Editor = (props) => {
         Here are the cut times:
         {outputCutTimes(props.cutTimes)}
       </div>
-      <CutButton onClick={clipsHandler}> oh wow </CutButton>
+      <CutButton onClick={clipsHandler}> Cut Time </CutButton>
+      <PostButton onClick={postHandler}> test post BOOYAKASHA </PostButton>
     </EditorContainer>
   )
 

@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # ignore assets
-frontend/public/videos
+**videos

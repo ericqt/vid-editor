@@ -1,0 +1,22 @@
+---
+services:
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      PORT: 80
+    ports:
+      - "8000:80"
+    volumes:
+      - ./frontend/src:/var/app/src
+      - /mnt/g/vid-editor/videos/:/var/app/public/videos
+  backend:
+    build:
+      context: ./backend
+    environment:
+      PORT: 80
+    ports:
+      - "3000:80"
+    volumes:
+      - ./backend/src:/var/app/src
+      - ./videos/:/var/app/videos
