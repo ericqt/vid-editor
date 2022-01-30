@@ -9,12 +9,12 @@ services:
       - "8000:80"
     volumes:
       - ./frontend/src:/var/app/src
-      - ./videos/:/var/app/videos
+      - /mnt/g/vid-editor/videos/:/var/app/public/videos
   backend:
     build:
       context: ./backend
     environment:
-      - PORT=80
+      PORT: 80
     ports:
       - "3000:80"
     volumes:

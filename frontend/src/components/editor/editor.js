@@ -74,7 +74,7 @@ const Editor = (props) => {
       'cuttimes': props.cutTimes
     }
 
-    fetch('http://localhost:3000/', {
+    fetch('http://localhost:3000/trim', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json',
       },
