@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import styled from 'styled-components';
 
 const EditorContainer = styled.div`
@@ -67,24 +66,21 @@ const Editor = (props) => {
         props.setCutState(true);
     }
     props.setCutTimes(cutData);
-  }
+  };
 
-  const postHandler = () => {
-    let cutTimes = {
-      'cuttimes': props.cutTimes
-    }
-
+  function postHandler(e) {
+    e.preventDefault()
     fetch('http://localhost:3000/trim', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(cutTimes),
+      headers: { 'Content-Type': 'application/json',},
+      body: JSON.stringify({'cuttimes': props.cutTimes}),
     })
     .then(response => response.json())
-    .then(data => {console.log(data)})
+    .then(data => {console.log('the response data iss: ', data)})
     .catch((error) => {
       console.error('Error: ', error);
     });
+    //console.log("the response is: ", await res.json());
   }
 
   return (
@@ -95,8 +91,10 @@ const Editor = (props) => {
         Here are the cut times:
         {outputCutTimes(props.cutTimes)}
       </div>
+      <div>
       <CutButton onClick={clipsHandler}> Cut Time </CutButton>
       <PostButton onClick={postHandler}> test post BOOYAKASHA </PostButton>
+      </div>
     </EditorContainer>
   )
 
