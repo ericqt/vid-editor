@@ -69,18 +69,20 @@ const Editor = (props) => {
   };
 
   function postHandler(e) {
-    e.preventDefault()
     fetch('http://localhost:3000/trim', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json',},
       body: JSON.stringify({'cuttimes': props.cutTimes}),
     })
     .then(response => response.json())
-    .then(data => {console.log('the response data iss: ', data)})
+    .then(data => {
+      console.log('the response data iss: ', data)
+    })
     .catch((error) => {
       console.error('Error: ', error);
     });
-    //console.log("the response is: ", await res.json());
+    e.preventDefault()
+    console.log('finished fetching')
   }
 
   return (
