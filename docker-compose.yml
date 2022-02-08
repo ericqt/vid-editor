@@ -22,3 +22,8 @@ services:
     volumes:
       - ./backend/src:/var/app/src
       - /mnt/e/test_footage/:/var/app/public/videos
+      - ./videos/:/var/app/videos
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
