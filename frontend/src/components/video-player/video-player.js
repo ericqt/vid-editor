@@ -39,7 +39,6 @@ const VideoPlayer = (props) => {
             onReady={handleReady}
             onProgress={handleProgress}
             url={props.url}
-            role='reactplayer'
             width='100%'
           />
           <SeekBar

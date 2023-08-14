@@ -10,7 +10,7 @@ services:
       - "8000:80"
     volumes:
       - ./frontend:/var/app/
-      - /mnt/g/vid-editor/videos/:/var/app/public/videos
+      - /mnt/e/test_footage/:/var/app/public/videos
       - /var/app/node_modules
   backend:
     build:
@@ -21,4 +21,4 @@ services:
       - "3000:80"
     volumes:
       - ./backend/src:/var/app/src
-      - ./videos/:/var/app/videos
+      - /mnt/e/test_footage/:/var/app/public/videos
