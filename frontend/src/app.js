@@ -7,8 +7,7 @@ const App = () => {
   const [player, setPlayer] = useState(null);
   const [cutTimes, setCutTimes] = useState([]);
   const [startCut, setCutState] = useState(true);
-  const someUrl = process.env.PUBLIC_URL + '/videos/test_vid.mkv';
-  console.log('whats the cwd', process.cwd())
+  const someUrl = './videos/Serve_3.MP4';
 
   return(
     <div>
