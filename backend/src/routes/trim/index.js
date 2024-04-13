@@ -14,8 +14,10 @@ const getFirstAudioCodecName = (streams) => {
   }
 }
 
+/*
 const incompatible_formats = (data) => {
   format_name = data.format.format_name;
+  console.log(data)
   audio_codec = getFirstAudioCodecName(data.streams)
   console.log('format name: ', format_name, 'included?', format_name.includes('mp4'))
   console.log('audio codec: ', audio_codec)
@@ -39,6 +41,13 @@ const prober = async () => {
     console.log('there was an error', error)
   }
 }
+
+router.route('/test')
+  .get( (req, rest, next) => {
+    prober()
+  })
+
+*/
 
 router.route('/')
   .get( (req, res, next) => {
@@ -68,10 +77,5 @@ router.route('/')
     })
     .save('./public/videos/cut_video.mp4')
   });
-
-router.route('/test')
-  .get( (req, rest, next) => {
-    prober()
-  })
 
 module.exports = router;
