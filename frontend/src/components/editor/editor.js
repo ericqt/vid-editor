@@ -9,13 +9,13 @@ const EditorContainer = styled.div`
 `
 
 const CutButton = styled.button`
-  position: absolute;
-  bottom: 0px;
+  display: block;
+  margin: 15px;
 `
 
 const PostButton = styled.button`
-  position: absolute;
-  bottom: 30px;
+  display: block;
+  margin: 15px;
 `
 
 const CutTimeSpan = styled.td`
@@ -85,6 +85,22 @@ const Editor = (props) => {
     console.log('finished fetching')
   }
 
+  function testHandler(e) {
+    fetch('http://localhost:3000/trim/test', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json',},
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('the response data iz: ', data)
+    })
+    .catch((error) => {
+      console.error('Error: ', error);
+    });
+    e.preventDefault()
+    console.log('finished fetching')
+  }
+
   return (
     <EditorContainer>
       <div
@@ -96,6 +112,7 @@ const Editor = (props) => {
       <div>
       <CutButton onClick={clipsHandler}> Cut Time </CutButton>
       <PostButton onClick={postHandler}> test post BOOYAKASHA </PostButton>
+      <PostButton onClick={testHandler}> test post test endpoint </PostButton>
       </div>
     </EditorContainer>
   )
