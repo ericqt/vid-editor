@@ -82,7 +82,8 @@ router.route('/')
       'starttime': starttime,
       'endtime': endtime
     });
-    res.json("the job is done")
+    console.log('job has been added')
+    //res.json("the job is done")
     //result = await command.inputOptions([`-noaccurate_seek`, `-ss`, starttime])
     //.outputOptions([`-to`, endtime, `-c:v copy`, `-c:a copy`])
     //.on('error', (err) => {
