@@ -1,8 +1,7 @@
 const util = require('node:util');
 var router = require('express').Router();
 var ffmpeg = require('fluent-ffmpeg');
-var Queue = require('bull');
-import { Queue } from 'bullmq';
+const Queue = require('bull');
 const trimQ = new Queue('trim-q', { redis: { port: 6379, host: 'redis'}});
 // const ffprobe = util.promisify(ffmpeg.ffprobe);
 
