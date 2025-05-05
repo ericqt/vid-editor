@@ -23,6 +23,16 @@ services:
       - ./backend/src:/var/app/src
       - /mnt/e/test_footage/:/var/app/public/videos
       - ./videos/:/var/app/videos
+  consumer:
+    build:
+      context: ./backend
+    environment:
+      PORT: 80
+    ports:
+      - "3001:80"
+    volumes:
+      - ./backend/src:/var/app/src
+    command: node ./src/consumer.js
   redis:
     image: "redis:alpine"
     ports:

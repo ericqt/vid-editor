@@ -1,18 +1,16 @@
 {
   "name": "backend",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "nodemon -L src/bin/www",
-    "start1": "npx tsx --env-file=.env --watch src/index.ts"
+    "start": "nodemon -L src/bin/www"
   },
   "dependencies": {
-    "bull": "^4.16.5",
+    "bullmq": "^5.52.1",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "^5",
-    "ffmpeg-static": "^5.2.0",
     "fluent-ffmpeg": "^2.1.2",
     "http-errors": "~1.6.3",
     "jstransformer": "^1.0.0",

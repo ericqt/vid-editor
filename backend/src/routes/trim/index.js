@@ -1,8 +1,10 @@
-const util = require('node:util');
-var router = require('express').Router();
+//var express = require('express')
+const router = require('express').Router();
 var ffmpeg = require('fluent-ffmpeg');
-const Queue = require('bull');
-const trimQ = new Queue('trim-q', { redis: { port: 6379, host: 'redis'}});
+// import { Queue } from 'bullmq'
+var queue = require('bullmq')
+const trimQ = new queue.Queue('trim-q', { connection: { port: 6379, host: 'redis'}});
+// const util = require('node:util');
 // const ffprobe = util.promisify(ffmpeg.ffprobe);
 
 const getFirstAudioCodecName = (streams) => {
@@ -43,12 +45,16 @@ const prober = async () => {
   }
 }
 
-router.route('/test')
-  .get( (req, rest, next) => {
-    prober()
-  })
-
 */
+router.route('/test')
+  .get( (req, res, next) => {
+    //prober()
+    console.log('you hit the test endpoint');
+    trimQ.add('trim-q', {
+      'starttime': 'test'
+    });
+    res.send('done');
+  })
 
 const cuttimesFormatter = (item, index, formatted_times) => {
   formatted_times.push([item[0], item[1]-item[0]])
@@ -105,11 +111,13 @@ router.route('/')
 
 // Move this function in to it's own file and create a new
 // docker service that starts the script with `node`
+/*
 trimQ.process( async(job, done) => {
   done();
   console.log(job.data);
   console.log('did some work here');
   return true;
 });
+*/
 
 module.exports = router;

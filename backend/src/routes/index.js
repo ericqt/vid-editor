@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 var ffmpeg = require('fluent-ffmpeg');
-var pathToFfmpeg = require('ffmpeg-static');
 var trimRoutes = require('./trim');
 
 /* home page resource. */

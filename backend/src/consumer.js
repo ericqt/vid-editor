@@ -1,5 +1,22 @@
-const trimQ = new Bull('trim-q');
+import { Worker } from 'bullmq';
+import redis from 'ioredis';
 
-trimQ.process( async(job) => {
-  console.log('did some work here');
-});
+const connection = new redis({ 
+    maxRetriesPerRequest: null,
+    host: "redis"
+})
+
+const worker = new Worker(
+    'trim-q', 
+    async job => {
+        if (job.name == 'trim-q') {
+            await paintCar(job.data);
+        }
+        console.log('working now')
+    }, 
+    {
+        connection: {
+            host: "redis",
+            port: "6379"
+        }
+    })
