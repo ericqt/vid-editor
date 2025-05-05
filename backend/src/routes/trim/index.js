@@ -53,7 +53,7 @@ router.route('/test')
     trimQ.add('trim-q', {
       'starttime': 'test'
     });
-    res.send('done');
+    res.status(200).send('bar');
   })
 
 const cuttimesFormatter = (item, index, formatted_times) => {

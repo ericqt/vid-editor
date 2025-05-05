@@ -27,9 +27,7 @@ services:
     build:
       context: ./backend
     environment:
-      PORT: 80
-    ports:
-      - "3001:80"
+      redisHost: redis
     volumes:
       - ./backend/src:/var/app/src
     command: node ./src/consumer.js
