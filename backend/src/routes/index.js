@@ -1,10 +1,7 @@
 import { Router } from 'express'
 var router = Router();
 
-// var ffmpeg = require('fluent-ffmpeg');
-
 import trimRoutes from './trim/index.js';
-//var trimRoutes = require('./trim');
 
 /* home page resource. */
 router.route('/')

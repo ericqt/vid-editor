@@ -1,11 +1,8 @@
-//var express = require('express')
 import { Router } from 'express'
 const router = Router();
 
-//var ffmpeg = require('fluent-ffmpeg');
 import ffmpeg from 'fluent-ffmpeg';
 import { Queue } from 'bullmq'
-//var queue = require('bullmq')
 const trimQ = new Queue('trim-q', { connection: { port: 6379, host: 'redis'}});
 // const util = require('node:util');
 // const ffprobe = util.promisify(ffmpeg.ffprobe);
@@ -111,16 +108,5 @@ router.route('/')
     //.save('./videos/cut_video.mp4')
     //res.json('this is the result');
   });
-
-// Move this function in to it's own file and create a new
-// docker service that starts the script with `node`
-/*
-trimQ.process( async(job, done) => {
-  done();
-  console.log(job.data);
-  console.log('did some work here');
-  return true;
-});
-*/
 
 export default router;
