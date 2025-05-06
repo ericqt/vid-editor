@@ -1,8 +1,10 @@
-var express = require('express');
-var router = express.Router();
+import { Router } from 'express'
+var router = Router();
 
-var ffmpeg = require('fluent-ffmpeg');
-var trimRoutes = require('./trim');
+// var ffmpeg = require('fluent-ffmpeg');
+
+import trimRoutes from './trim/index.js';
+//var trimRoutes = require('./trim');
 
 /* home page resource. */
 router.route('/')
@@ -18,4 +20,4 @@ router.get('/test', function(req, res, next) {
 });
 
 
-module.exports = router;
+export default router;

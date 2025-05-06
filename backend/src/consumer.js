@@ -1,7 +1,7 @@
-import { Worker } from 'bullmq';
+import worker from 'bullmq';
 import redis from 'ioredis';
 
-const worker = new Worker(
+const consumer = new worker.Worker(
     'trim-q', 
     async job => {
         console.log('working now')

@@ -1,9 +1,12 @@
 //var express = require('express')
-const router = require('express').Router();
-var ffmpeg = require('fluent-ffmpeg');
-// import { Queue } from 'bullmq'
-var queue = require('bullmq')
-const trimQ = new queue.Queue('trim-q', { connection: { port: 6379, host: 'redis'}});
+import { Router } from 'express'
+const router = Router();
+
+//var ffmpeg = require('fluent-ffmpeg');
+import ffmpeg from 'fluent-ffmpeg';
+import { Queue } from 'bullmq'
+//var queue = require('bullmq')
+const trimQ = new Queue('trim-q', { connection: { port: 6379, host: 'redis'}});
 // const util = require('node:util');
 // const ffprobe = util.promisify(ffmpeg.ffprobe);
 
@@ -120,4 +123,4 @@ trimQ.process( async(job, done) => {
 });
 */
 
-module.exports = router;
+export default router;

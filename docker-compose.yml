@@ -30,7 +30,7 @@ services:
       redisHost: redis
     volumes:
       - ./backend/src:/var/app/src
-    command: node ./src/consumer.js
+    command: node --trace-warnings ./src/consumer.js
   redis:
     image: "redis:alpine"
     ports:
