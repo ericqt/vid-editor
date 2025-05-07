@@ -66,47 +66,22 @@ router.route('/')
     res.json("booyakasha");
   })
   .post( async (req, res, next) => {
+    console.log('in trim index post method', req.body);
     console.log(process.cwd());
     res.json(req.body);
-    command = ffmpeg('./videos/test_vid.mkv');
-    formatted_times = []
-    cuttimes = req.body['cuttimes'];
-    cuttimes.forEach(cuttimesFormatter())
-    starttime = cuttimes[0][0];
-    endtime = cuttimes[0][1] - cuttimes[0][0];
-    console.log('the formatted cut times are: ', formatted_times)
+    let command = ffmpeg('./videos/test_vid.mkv');
+    let formatted_times = []
+    let cuttimes = req.body['cuttimes'];
+    //cuttimes.forEach(cuttimesFormatter())
+    let starttime = cuttimes[0][0];
+    let endtime = cuttimes[0][1] - cuttimes[0][0];
+    //console.log('the formatted cut times are: ', formatted_times)
     console.log('attempting to use ffmpeg here');
-    // command = ffmpeg('./public/videos/Serve_3.MP4')
-    //   .videoCodec('copy')
-    //   // ah the audio copy is not working
-    //   //.audioCodec('copy')
-    //   .setStartTime(starttime)
-    //   .setDuration(endtime);
-    //command
-    //.on('error', (err) => {
-    //  console.log('An Error occurred: ', err.message, 'and the whole message', err);
-    //})
-    //.on('end', () => {
-    //  console.log('processing has finished!');
-    //})
-    //.save('./public/videos/cut_video.mp4')
-    //console.log('what are the times? ', req.body);
-    // const job = trimQ.add({
-    //   'starttime': starttime,
-    //   'endtime': endtime
-    // });
+    const job = trimQ.add('trim-q', {
+      'starttime': starttime,
+      'endtime': endtime
+    });
     console.log('job has been added')
-    //res.json("the job is done")
-    //result = await command.inputOptions([`-noaccurate_seek`, `-ss`, starttime])
-    //.outputOptions([`-to`, endtime, `-c:v copy`, `-c:a copy`])
-    //.on('error', (err) => {
-    //  console.log('An Error occurred: ', err.message);
-    //})
-    //.on('end', () => {
-    //  console.log('processing has finished!');
-    //})
-    //.save('./videos/cut_video.mp4')
-    //res.json('this is the result');
   });
 
 export default router;
