@@ -1,3 +1,4 @@
+import cmd from 'child_process';
 import worker from 'bullmq';
 import redis from 'ioredis';
 import ffmpeg from 'fluent-ffmpeg';
@@ -5,7 +6,7 @@ import ffmpeg from 'fluent-ffmpeg';
 const consumer = new worker.Worker(
     'trim-q', 
     async job => {
-        console.log('working now')
+        console.log('working now');
         if (job.name == 'trim-q') {
             console.log('starting work now with data:', job.data);
             let starttime = job.data['starttime']
@@ -25,12 +26,14 @@ const consumer = new worker.Worker(
             //})
             //.save('./public/videos/cut_video.mp4')
 
+
             console.log('starting the ffmpeg command')
             try{
+                ffmpeg.setFfmpegPath('/var/app/ffmpeg/bin');
                 const result = await command.inputOptions(['-noaccurate_seek', '-ss', Math.round(starttime)])
                 .outputOptions(['-t', Math.round(endtime), '-c', 'copy'])
                 .on('start', (commandLine) => {
-                    console.log('spawned ffmpeg commmand as: ', commandLine)
+                    console.log('spawned ffmpeg commmand as:', commandLine)
                 })
                 .on('error', (err) => {
                   console.log('An Error occurred in the second: ', err.message, 'and the whole message', err);

@@ -24,8 +24,7 @@ services:
       - /mnt/e/test_footage/:/var/app/public/videos
       - ./videos/:/var/app/videos
   consumer:
-    build:
-      context: ./backend
+    image: 'vid-editor-backend:latest'
     environment:
       redisHost: redis
     volumes:
