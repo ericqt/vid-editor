@@ -13,8 +13,7 @@ COPY ./ ./
 ADD https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz /var/app
 
 RUN tar -xvf ./ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz && \
-    mv ffmpeg-n7.1-latest-linux64-gpl-7.1 ./ffmpeg  && \
-    chmod 777 ffmpeg/bin/* && \
+    mv ffmpeg-n7.1-latest-linux64-gpl-7.1 ffmpeg  && \
     rm ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz
 
 ENV FFMPEG_PATH=/var/app/ffmpeg/bin/ffmpeg

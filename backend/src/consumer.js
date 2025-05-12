@@ -29,7 +29,7 @@ const consumer = new worker.Worker(
 
             console.log('starting the ffmpeg command')
             try{
-                ffmpeg.setFfmpegPath('/var/app/ffmpeg/bin');
+                ffmpeg.setFfmpegPath('/var/app/ffmpeg/bin/ffmpeg');
                 const result = await command.inputOptions(['-noaccurate_seek', '-ss', Math.round(starttime)])
                 .outputOptions(['-t', Math.round(endtime), '-c', 'copy'])
                 .on('start', (commandLine) => {
