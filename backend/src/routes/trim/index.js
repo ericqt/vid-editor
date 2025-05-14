@@ -4,6 +4,14 @@ const router = Router();
 import { Queue } from 'bullmq'
 const trimQ = new Queue('trim-q', { connection: { port: 6379, host: 'redis'}});
 
+let db = app.locals.dbConn;
+let testSchema = new db.Schema({
+  name: String,
+  something: String,
+  age: Number
+})
+let foo = db.model('test', testSchema);
+
 const formatJobsPayload = (rawData) => {
     return rawData.map( (times, index) => ({
       'name': 'lawl',
@@ -17,15 +25,21 @@ const formatJobsPayload = (rawData) => {
 
 router.route('/test')
   .get( (req, res, next) => {
-    //prober()
+    const newFoo = new foo({
+      name: 'bob lemon',
+      age: 35
+    })
+    newFoo.save()
+      .then(data => console.log('successfully saved:', data))
+      .catch(error => console.log('failed to save:', error))
     console.log('you hit the test endpoint');
-    let name = 'lawl'
-    trimQ.addBulk('trim-q', [
-      { name, data: { paint: 'car' } },
-      { name, data: { paint: 'house' } },
-      { name, data: { paint: 'boat' } },
-    ]);
     res.status(200).send('bar');
+  })
+
+router.route('/test_get_db')
+  .get( (req, res, next) => {
+      let db = req.app.locals.dbConn;
+      let testModel = db.model('test', testSchema)
   })
 
 router.route('/')
