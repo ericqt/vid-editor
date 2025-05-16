@@ -1,16 +1,15 @@
 import { Router } from 'express'
 const router = Router();
+import mongoose from 'mongoose';
 
 import { Queue } from 'bullmq'
 const trimQ = new Queue('trim-q', { connection: { port: 6379, host: 'redis'}});
 
-let db = app.locals.dbConn;
-let testSchema = new db.Schema({
+let testSchema = new mongoose.Schema({
   name: String,
   something: String,
   age: Number
 })
-let foo = db.model('test', testSchema);
 
 const formatJobsPayload = (rawData) => {
     return rawData.map( (times, index) => ({
@@ -25,6 +24,7 @@ const formatJobsPayload = (rawData) => {
 
 router.route('/test')
   .get( (req, res, next) => {
+    let foo = mongoose.model('test', testSchema);
     const newFoo = new foo({
       name: 'bob lemon',
       age: 35

@@ -6,21 +6,14 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
-//db
-import mongoose from 'mongoose'
-
-mongoose.connect('mongodb://mongodb:27017/mydb', {useNewUrlParser: true, useUnifiedTopology: true})
-.then(() => {
-  console.log('connected!');
-  app.locals.dbConn = mongoose
-})
-.catch(error => console.log('could not connect to mongodb', error))
-
 import indexRouter from './routes/index.js';
+import db from './config/db.js';
 //import usersRouter from './routes/users.js';
 //import trimRouter from './routes/trim/index.js';
 
-var app = express();
+let app = express();
+//init mongodb connection
+db()
 
 // view engine setup
 const __filename = fileURLToPath(import.meta.url);
