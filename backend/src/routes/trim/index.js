@@ -1,15 +1,9 @@
 import { Router } from 'express'
 const router = Router();
-import mongoose from 'mongoose';
+import video from '../../mongo_models/video.js';
 
 import { Queue } from 'bullmq'
 const trimQ = new Queue('trim-q', { connection: { port: 6379, host: 'redis'}});
-
-let testSchema = new mongoose.Schema({
-  name: String,
-  something: String,
-  age: Number
-})
 
 const formatJobsPayload = (rawData) => {
     return rawData.map( (times, index) => ({
@@ -24,12 +18,13 @@ const formatJobsPayload = (rawData) => {
 
 router.route('/test')
   .get( (req, res, next) => {
-    let foo = mongoose.model('test', testSchema);
-    const newFoo = new foo({
-      name: 'bob lemon',
-      age: 35
+    const newVideo = new video({
+      file_name: 'lawl',
+      file_size: 51234324,
+      length: 351,
+      cuts: [[30, 50], [35, 60]]
     })
-    newFoo.save()
+    newVideo.save()
       .then(data => console.log('successfully saved:', data))
       .catch(error => console.log('failed to save:', error))
     console.log('you hit the test endpoint');

@@ -18,3 +18,6 @@ const videoSchema = new mongoose.Schema(
         cuts: [[]],
     }
 )
+
+const video = mongoose.model('video', videoSchema)
+export default video
