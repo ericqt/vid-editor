@@ -9,8 +9,8 @@ const trimmer = async (index, start, end) => {
     let command = ffmpeg('./public/videos/Serve_3.MP4')
     console.log('starting the ffmpeg command')
         try{
-            const result = await command.inputOptions(['-noaccurate_seek', '-ss', Math.round(start)])
-            .outputOptions(['-t', Math.round(end), '-c', 'copy'])
+            const result = await command.inputOptions(['-ss', start])
+            .outputOptions(['-to', end, '-c', 'copy'])
             .on('start', (commandLine) => {
                 console.log('spawned ffmpeg commmand as:', commandLine)
             })

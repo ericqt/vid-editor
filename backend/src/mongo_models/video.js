@@ -2,18 +2,38 @@ import mongoose from 'mongoose';
 
 const videoSchema = new mongoose.Schema(
     {
-        file_name: {
+        fileName: {
             type: String,
             required: [true, 'Video name is required'],
             minlength: [1, 'Video name should have 1 or more characters']
         },
-        file_size: {
+        fileSize: {
             type: Number,
             required: [true, 'Missing file size']
         },
         length: {
             type: Number,
             required: [true, 'Missing video length']
+        },
+        codecName: {
+            type: String,
+            required: [true, 'Missing codec name']
+        },
+        dimensions: {
+            type: [String],
+            required: [true, 'Missing video dimensions']
+        },
+        avgFramerate: {
+            type: String,
+            required: [true, 'Missing video framerate']
+        },
+        videoBitrate: {
+            type: Number,
+            required: [true, 'Missing video bitrate']
+        },
+        rotation: {
+            type: Number,
+            required: [true, 'Missing video rotation']
         },
         cuts: [[]],
     }
