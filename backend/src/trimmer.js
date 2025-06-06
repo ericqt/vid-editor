@@ -1,8 +1,5 @@
-import cmd from 'child_process';
-import worker from 'bullmq';
-import redis from 'ioredis';
+import { Worker } from 'bullmq';
 import ffmpeg from 'fluent-ffmpeg';
-import video from './mongo_models/video.js';
 
 const trimmer = async (index, start, end) => {
     ffmpeg.setFfmpegPath(process.env.FFMPEG_PATH);
@@ -27,16 +24,16 @@ const trimmer = async (index, start, end) => {
         }
 }
 
-const consumer = new worker.Worker(
-    'trim-q', 
+const trimmerWorker = new Worker(
+    'joiner',
     async job => {
-        console.log('starting work now with data:', job.data);
-        const result = await trimmer(job.data['index'], job.data['start'], job.data['end']);
-        console.log(result)
-    }, 
+        //stuff here
+        console.log('starting trim with data:', job.data);
+    },
     {
         connection: {
             host: process.env.redisHost,
             port: "6379"
         }
-    })
+    }
+)
