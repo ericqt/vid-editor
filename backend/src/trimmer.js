@@ -1,15 +1,13 @@
 import { Worker } from 'bullmq';
 import redisWorker from './config/bullmqRedisConnection.js'
 import ffmpeg from 'fluent-ffmpeg';
+import splitFileName from './utils/utils.js';
 
 const trimmer = async (fileName, index, start, end) => {
     try{
         ffmpeg.setFfmpegPath(process.env.FFMPEG_PATH);
-        let splitted = fileName.split('.');
-        console.log('the fileName is:', splitted);
-        const ext = splitted.pop();
-        const name = splitted.join('.')
         const command = ffmpeg(`./public/videos/${fileName}`)
+        const [name, ext] = splitFileName(fileName)
         const filename = `${name}_${index}.${ext}`
         console.log('the new filename is:', filename);
         const result = await command

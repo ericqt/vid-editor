@@ -1,7 +1,7 @@
 import { Worker } from 'bullmq';
 import ffmpeg from 'fluent-ffmpeg';
 
-const joiner = async (index, start, end) => {
+const joiner = async (fileName, index, start, end) => {
     ffmpeg.setFfmpegPath(process.env.FFMPEG_PATH);
     let command = ffmpeg('./public/videos/Serve_3.MP4')
     console.log('starting the ffmpeg command')
@@ -18,7 +18,6 @@ const joiner = async (index, start, end) => {
             })
             .on('end', () => {
                 console.log('processing has finished!');
-              
             })
             .save(`./public/videos/${filename}`)
         } catch (err) {
@@ -29,6 +28,7 @@ const joiner = async (index, start, end) => {
 const joinerWorker = new Worker(
     'joiner',
     async job => {
-
+        const video = job.data
+        console.log('inside the joiner worker');
     },
 )
