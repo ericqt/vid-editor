@@ -7,14 +7,13 @@ import buildMetadata from '../../ffmpeg/metadata.js'
 import { Queue } from 'bullmq'
 const trimQ = new Queue('trim-q', { connection: { port: 6379, host: 'redis'}});
 
-const createVideoDoc = (cutTimes, metadata) => {
+const createVideoDoc = async (cutTimes, metadata) => {
     const newVideo = new video({
         ...metadata,
         cuts: cutTimes
     })
-    newVideo.save()
-    .then(data => console.log('successfully saved'))
-    .catch(error => console.log('failed to save:', error));
+    const result = await newVideo.save()
+    return result.fileName
 }
 
 router.route('/')
@@ -32,8 +31,8 @@ router.route('/')
     const filePath = './public/videos/Serve_3.MP4'
     try {
         const metadata = await buildMetadata(filePath, roundedTimes)
-        createVideoDoc(roundedTimes, metadata);
-        const jobs = await trimQ.add('trim-q', {roundedTimes});
+        const fileName = await createVideoDoc(roundedTimes, metadata).catch(error => console.error('failed to save:', error));
+        const jobs = await trimQ.add('trim-q', {fileName, roundedTimes});
         console.log('job has been added')
     } catch (err) {
         console.log(err)

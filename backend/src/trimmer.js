@@ -1,39 +1,42 @@
 import { Worker } from 'bullmq';
+import redisWorker from './config/bullmqRedisConnection.js'
 import ffmpeg from 'fluent-ffmpeg';
 
-const trimmer = async (index, start, end) => {
-    ffmpeg.setFfmpegPath(process.env.FFMPEG_PATH);
-    let command = ffmpeg('./public/videos/Serve_3.MP4')
-    console.log('starting the ffmpeg command')
-        try{
-            const result = await command.inputOptions(['-ss', start])
-            .outputOptions(['-to', end, '-c', 'copy'])
-            .on('start', (commandLine) => {
-                console.log('spawned ffmpeg commmand as:', commandLine)
-            })
-            .on('error', (err) => {
-                console.log('An Error occurred in the second: ', err.message, 'and the whole message', err);
-            })
-            .on('end', () => {
-                console.log('processing has finished!');
-              
-            })
-            .save('./public/videos/cut_video_'+index+'.mp4')
-        } catch (err) {
-            console.log('caught an error here: ', err);
-        }
+const trimmer = async (fileName, index, start, end) => {
+    try{
+        ffmpeg.setFfmpegPath(process.env.FFMPEG_PATH);
+        let splitted = fileName.split('.');
+        console.log('the fileName is:', splitted);
+        const ext = splitted.pop();
+        const name = splitted.join('.')
+        const command = ffmpeg(`./public/videos/${fileName}`)
+        const filename = `${name}_${index}.${ext}`
+        console.log('the new filename is:', filename);
+        const result = await command
+        .outputOptions(['-ss', start, '-to', end, '-c', 'copy'])
+        .on('start', (commandLine) => {
+            console.log('spawned ffmpeg commmand as:', commandLine)
+        })
+        .on('error', (err) => {
+            console.log('An Error occurred in the second: ', err.message, 'and the whole message', err);
+        })
+        .on('end', () => {
+            console.log('processing has finished!');
+          
+        })
+        .save(`./public/videos/${filename}`)
+    } catch (err) {
+        console.log('caught an error here: ', err);
+    }
 }
 
-const trimmerWorker = new Worker(
-    'joiner',
+const trimmerWorker = redisWorker(
+    'trimmer',
     async job => {
         //stuff here
-        console.log('starting trim with data:', job.data);
-    },
-    {
-        connection: {
-            host: process.env.redisHost,
-            port: "6379"
-        }
+        const video = job.data
+        console.log('starting trim with fileName:', video.fileName);
+        const result = await trimmer(video.fileName, video.index, video.start, video.end);
+        console.log(`the result from trimmer ${job.data.index} is:`, result);
     }
 )

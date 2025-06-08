@@ -4,7 +4,9 @@ ffmpeg.setFfprobePath(process.env.FFPROBE_PATH);
 const buildMetadata = (filePath, roundedTimes) => {
     return new Promise((resolve, reject) => {
         ffmpeg.ffprobe(filePath, (err, metadata) => {
-            console.log('the error is', err)
+            if(err){
+                console.log('the error is', err)
+            }
             //console.log('ffprobing the video', metadata);
             const video_stream = metadata.streams.find( (stream) => stream.codec_type == 'video')
             const format_data = metadata.format
