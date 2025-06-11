@@ -3,13 +3,10 @@ import redisWorker from './config/bullmqRedisConnection.js'
 import ffmpeg from 'fluent-ffmpeg';
 import splitFileName from './utils/utils.js';
 
-const trimmer = async (fileName, index, start, end) => {
+const trimmerLogic = async (fileName, childFileName, index, start, end) => {
     try{
         ffmpeg.setFfmpegPath(process.env.FFMPEG_PATH);
         const command = ffmpeg(`./public/videos/${fileName}`)
-        const [name, ext] = splitFileName(fileName)
-        const filename = `${name}_${index}.${ext}`
-        console.log('the new filename is:', filename);
         const result = await command
         .outputOptions(['-ss', start, '-to', end, '-c', 'copy'])
         .on('start', (commandLine) => {
@@ -20,9 +17,9 @@ const trimmer = async (fileName, index, start, end) => {
         })
         .on('end', () => {
             console.log('processing has finished!');
-          
+            return `${childFileName} is done`;
         })
-        .save(`./public/videos/${filename}`)
+        .save(`./public/videos/${childFileName}`)
     } catch (err) {
         console.log('caught an error here: ', err);
     }
@@ -34,7 +31,14 @@ const trimmerWorker = redisWorker(
         //stuff here
         const video = job.data
         console.log('starting trim with fileName:', video.fileName);
-        const result = await trimmer(video.fileName, video.index, video.start, video.end);
-        console.log(`the result from trimmer ${job.data.index} is:`, result);
+        const result = await trimmerLogic(
+            video.fileName, 
+            video.childFileName, 
+            video.index, 
+            video.start, 
+            video.end
+        );
+        console.log(`trimmerLogic of file ${video.childFileName} is done`, result);
+        return `${video.childFileName} is done`;
     }
 )
