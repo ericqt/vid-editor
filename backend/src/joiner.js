@@ -3,16 +3,26 @@ import ffmpeg from 'fluent-ffmpeg';
 import splitFileName from './utils/utils.js';
 import { writeFile } from 'fs/promises';
 
-const joiner = async (fileName, index, start, end) => {
+const joinerLogic = async (fileName, fileExt, childFileNames) => {
     try{
+        // setup ffmpeg
         ffmpeg.setFfmpegPath(process.env.FFMPEG_PATH);
-        const [name, ext] = splitFileName(fileName)
-        let command = ffmpeg(`./public/videos/${fileName}`)
-        console.log('starting the ffmpeg command')
-        // const result = await command.inputOptions(['-ss', start])
-        const filename = `${name}_joined.${ext}`
-        const result = await command
-        .outputOptions(['-ss', start, '-to', end, '-c', 'copy'])
+        // setup the final filename
+        const filename = `${fileName}_joined.${fileExt}`
+
+        // setup the text file used for concat
+        console.log('the cwd is:', process.cwd());
+        const dirToVideos = `${process.cwd()}/public/videos/`
+        const text = childFileNames.map( (childFileName) => `file '${dirToVideos}${childFileName}'`).join('\n');
+        console.log('the joined filenames in a string is:', text);
+        const concatTextFileName = `${dirToVideos}${fileName}_joined.txt`
+        await writeFile(concatTextFileName, text, {encoding: 'utf8'});
+
+        // build up the ffmpeg command
+        let command = ffmpeg(concatTextFileName);
+        console.log('starting the ffmpeg command');
+        const result = await command.inputOptions('-f', 'concat', '-safe', '0')
+        .outputOptions(['-c:v', 'copy'])
         .on('start', (commandLine) => {
             console.log('spawned ffmpeg commmand as:', commandLine)
         })
@@ -33,6 +43,10 @@ const joinerWorker = redisWorker(
     async job => {
         const video = job.data
         console.log('---------------------------------------------------------');
-        console.log('inside the joiner worker');
+        console.log('inside the joiner worker', job.data);
+        const childFileNames = job.data.files;
+        const fileName = job.data.fileName
+        const fileExt = job.data.fileExt
+        joinerLogic(fileName, fileExt, childFileNames);
     },
 )

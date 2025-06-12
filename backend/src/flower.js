@@ -27,23 +27,25 @@ const formatJobsPayload = (rawData, name, ext) => {
 redisWorker(
     'trim-q', 
     async job => {
-    console.log('formatting jobs');
-    const [name, ext] = splitFileName(job.data.fileName)
-    const childJobs = formatJobsPayload(job.data.roundedTimes, name, ext);
-    if(childJobs.length <=1){
-        console.log('only a single trim here', childJobs[0].data);
-        trimmerQ.add('singleTrim', childJobs[0].data);
-    } else {
-        console.log('childJobs:', childJobs)
-        const flow = await flowProducer.add({
-            name: 'joinFlow',
-            queueName: 'joiner',
-            data: {
-                files: childJobs.map( (data) => {return data.childFileName})
-            },
-            children: childJobs
-        })
-        console.log('flower job is complete');
-    }
+        console.log('formatting jobs');
+        const [name, ext] = splitFileName(job.data.fileName)
+        const childJobs = formatJobsPayload(job.data.roundedTimes, name, ext);
+        if(childJobs.length <=1){
+            //console.log('only a single trim here', childJobs[0].data);
+            trimmerQ.add('singleTrim', childJobs[0].data);
+        } else {
+            //console.log('childJobs:', childJobs)
+            const flow = await flowProducer.add({
+                name: 'joinFlow',
+                queueName: 'joiner',
+                data: {
+                    files: childJobs.map( (childjob) => {return childjob.data.childFileName}),
+                    fileName: name,
+                    fileExt: ext,
+                },
+                children: childJobs
+            })
+            console.log('flower job is complete');
+        }
     }
 )
