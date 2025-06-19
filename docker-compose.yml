@@ -23,7 +23,7 @@ services:
       - ./backend/src:/var/app/src
       - /mnt/e/test_footage/:/var/app/public/videos
       - ./videos/:/var/app/videos
-  consumer:
+  flower:
     image: 'vid-editor-backend:latest'
     environment:
       redisHost: redis
@@ -31,8 +31,30 @@ services:
       - ./backend/src:/var/app/src
       - /mnt/e/test_footage/:/var/app/public/videos
       - ./videos/:/var/app/videos
-    command: nodemon -L ./src/consumer.js
+    command: nodemon -L ./src/flower.js
+  trimmer:
+    image: 'vid-editor-backend:latest'
+    environment:
+      redisHost: redis
+    volumes:
+      - ./backend/src:/var/app/src
+      - /mnt/e/test_footage/:/var/app/public/videos
+      - ./videos/:/var/app/videos
+    command: nodemon -L ./src/trimmer.js
+  joiner:
+    image: 'vid-editor-backend:latest'
+    environment:
+      redisHost: redis
+    volumes:
+      - ./backend/src:/var/app/src
+      - /mnt/e/test_footage/:/var/app/public/videos
+      - ./videos/:/var/app/videos
+    command: nodemon -L ./src/joiner.js
   redis:
     image: "redis:alpine"
     ports:
       - "6379:6379"
+  mongodb:
+    image: "mongo:8.0.9"
+    ports:
+      - "27017:27017"
