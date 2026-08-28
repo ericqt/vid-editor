@@ -73,7 +73,6 @@ export const SeekBar = (props) => {
         />
         <SliderHandle
           onChange={props.handleSlider}
-          player={props.player}
           type='range'
           min={0}
           max={props.videoDuration}

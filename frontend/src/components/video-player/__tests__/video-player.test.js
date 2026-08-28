@@ -1,7 +1,5 @@
 import '@testing-library/jest-dom'
 import {render, fireEvent, screen} from '@testing-library/react';
-import { shallow, mount, render as erender } from 'enzyme';
-import '../../../setup-tests';
 import VideoPlayer from '../video-player';
 
 

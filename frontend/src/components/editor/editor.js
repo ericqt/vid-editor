@@ -46,24 +46,21 @@ export const outputCutTimes = (cutTimesData) => {
 const Editor = (props) => {
 
   const clipsHandler = () => {
-    let cutData = props.cutTimes;
-    // let playerCurrentTime = props.player.getCurrentTime();
     let currentTime = props.player.getCurrentTime()
-    switch (props.startCut){
-      case true:
-        cutData[cutData.length] = []
-        cutData[cutData.length-1][0] = props.player.getCurrentTime()
-        props.setCutState(false);
-        break;
-      default:
-        let currentStart = cutData[cutData.length - 1][0]
-        if (currentTime < currentStart){
-          cutData[cutData.length - 1][1] = currentStart
-          cutData[cutData.length - 1][0] = currentTime
-        } else {
-          cutData[cutData.length - 1][1] = props.player.getCurrentTime()
-        }
-        props.setCutState(true);
+    let cutData;
+    if (props.startCut){
+      cutData = [...props.cutTimes,[currentTime]]
+      props.setCutState(false);
+    } else {
+      const lastClip = [...props.cutTimes[props.cutTimes.length - 1]];
+      if (currentTime < lastClip[0]){
+        lastClip[1] = lastClip[0]
+        lastClip[0] = currentTime;
+      } else {
+        lastClip[1] = currentTime;
+      }
+      cutData = [...props.cutTimes.slice(0, -1), lastClip];
+      props.setCutState(true);
     }
     props.setCutTimes(cutData);
   };
